@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thêm mới Khóa học</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-5" style="max-width: 600px;">
+    <h2 class="mb-4">Thêm mới Khóa học</h2>
+
+    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+    <form th:action="@{/courses/create}" th:object="${course}" method="post">
+        <div class="mb-3">
+            <label class="form-label">Tên khóa học:</label>
+            <input type="text" th:field="*{name}" class="form-control" required>
+            <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Loại khóa học:</label>
+            <select th:field="*{category.id}" class="form-select" required>
+                <option value="">-- Chọn loại khóa học --</option>
+                <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}"></option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Học phí (VNĐ):</label>
+            <input type="number" th:field="*{tuitionFee}" class="form-control" min="1" required>
+            <div class="text-danger" th:if="${#fields.hasErrors('tuitionFee')}" th:errors="*{tuitionFee}"></div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Thời lượng (giờ):</label>
+            <input type="number" th:field="*{duration}" class="form-control" min="1" required>
+            <div class="text-danger" th:if="${#fields.hasErrors('duration')}" th:errors="*{duration}"></div>
+        </div>
+
+        <div class="mb-3 form-check">
+            <input type="checkbox" th:field="*{isActive}" class="form-check-input" id="isActiveCheck">
+            <label class="form-check-label" for="isActiveCheck">Đang tuyển sinh (IsActive)</label>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Mô tả chi tiết:</label>
+            <textarea th:field="*{description}" class="form-control" rows="3"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-success">Lưu khóa học</button>
+        <a href="/courses" class="btn btn-secondary">Quay lại danh sách</a>
+    </form>
+</body>
+</html>
